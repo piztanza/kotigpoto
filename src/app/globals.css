@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Custom CSS variables for shadcn/ui */
+    --background: 210 40% 8%; /* #1F2022 */
+    --foreground: 0 0% 100%; /* #FFFFFF */
+    --card: 210 40% 12%; /* Slightly lighter than background */
+    --card-foreground: 0 0% 100%;
+    --popover: 210 40% 12%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 184 100% 35%; /* #00ADB5 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 15%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 40% 15%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 184 100% 35%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 40% 20%;
+    --input: 210 40% 20%;
+    --ring: 184 100% 35%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+  
+  button {
+    @apply font-button;
+  }
+  
+  p, span, div {
+    @apply font-body;
+  }
+}
+
+@layer components {
+  /* Custom animations for KotigPoto */
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 20px -10px #00ADB5;
+    }
+    to {
+      box-shadow: 0 0 20px -10px #00ADB5, 0 0 40px -10px #00ADB5;
+    }
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent;
+  }
+  
+  .card-glass {
+    @apply bg-background/80 backdrop-blur-lg border border-primary/20;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-primary text-white font-button px-6 py-3 rounded-lg 
+           hover:shadow-lg hover:shadow-primary/25 transition-all duration-300
+           focus:outline-none focus:ring-2 focus:ring-primary/50;
+  }
+  
+  .btn-secondary {
+    @apply border border-primary text-primary font-button px-6 py-3 rounded-lg
+           hover:bg-primary hover:text-white transition-all duration-300
+           focus:outline-none focus:ring-2 focus:ring-primary/50;
+  }
+  
+  /* Touch-friendly styles for kiosk mode */
+  .kiosk-button {
+    @apply min-h-[80px] min-w-[160px] text-xl font-button font-semibold
+           rounded-xl shadow-lg active:scale-95 transition-transform duration-150;
+  }
+  
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-background-light rounded-lg;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-primary/50 rounded-lg hover:bg-primary/70;
+  }
+  
+  /* Loading skeleton */
+  .skeleton {
+    @apply animate-pulse bg-background-light rounded;
+  }
+  
+  /* Text shadows for better readability */
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Responsive grid for dashboard cards */
+  .dashboard-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+  }
+  
+  /* Mobile-first navigation */
+  .mobile-nav {
+    @apply fixed bottom-0 left-0 right-0 bg-background-light border-t border-primary/20
+           p-4 flex justify-around items-center z-50 md:hidden;
+  }
+} 
