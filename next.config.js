@@ -1,21 +1,22 @@
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-  runtimeCaching: [
-    {
-      urlPattern: /^https?.*/,
-      handler: 'NetworkFirst',
-      options: {
-        cacheName: 'offlineCache',
-        expiration: {
-          maxEntries: 200,
-        },
-      },
-    },
-  ],
-  disable: process.env.NODE_ENV === 'development',
-});
+// Temporarily disable PWA to isolate the issue
+// const withPWA = require('next-pwa')({
+//   dest: 'public',
+//   register: true,
+//   skipWaiting: true,
+//   runtimeCaching: [
+//     {
+//       urlPattern: /^https?.*/,
+//       handler: 'NetworkFirst',
+//       options: {
+//         cacheName: 'offlineCache',
+//         expiration: {
+//           maxEntries: 200,
+//         },
+//       },
+//     },
+//   ],
+//   disable: process.env.NODE_ENV === 'development',
+// });
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -23,17 +24,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remove deprecated experimental.appDir as it's default in Next.js 14
-  experimental: {
-    // Only include necessary experimental features
-  },
+  // Minimal configuration to prevent build issues
+  outputFileTracing: false,
   
-  // Output configuration for better build performance
-  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
-  
-  // Optimize bundle tracing
-  outputFileTracing: true,
-  
+  // Basic image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
@@ -50,35 +44,12 @@ const nextConfig = {
     ],
   },
   
+  // Environment variables
   env: {
     CUSTOM_KEY: 'KotigPoto PWA',
   },
   
-  // Webpack configuration to prevent circular dependencies
-  webpack: (config, { dev, isServer }) => {
-    // Optimize for production builds
-    if (!dev && !isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-      }
-    }
-    
-    // Prevent potential circular dependency issues
-    config.module.rules.push({
-      test: /\.js$/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: ['next/babel'],
-          cacheDirectory: true,
-        },
-      },
-    });
-    
-    return config;
-  },
-  
-  // Headers for security and performance
+  // Basic security headers
   async headers() {
     return [
       {
@@ -101,7 +72,7 @@ const nextConfig = {
     ];
   },
   
-  // Redirects for SEO
+  // Basic redirects
   async redirects() {
     return [
       {
@@ -113,4 +84,6 @@ const nextConfig = {
   },
 };
 
-module.exports = withBundleAnalyzer(withPWA(nextConfig)); 
+// Temporarily disable PWA wrapper
+// module.exports = withBundleAnalyzer(withPWA(nextConfig));
+module.exports = nextConfig; 
