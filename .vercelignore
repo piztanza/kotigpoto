@@ -1,0 +1,44 @@
+# Dependencies
+node_modules
+
+# Development files
+.env.local
+.env.development.local
+
+# Build artifacts that Vercel will regenerate
+.next
+out
+dist
+
+# TypeScript build info
+*.tsbuildinfo
+
+# IDE files
+.vscode
+.idea
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Cache directories
+.cache
+.parcel-cache
+.eslintcache
+
+# PWA files (will be regenerated)
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
+public/*.map
+
+# Logs
+*.log
+logs
+
+# Testing
+coverage
+
+# Temporary files
+tmp
+temp 

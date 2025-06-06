@@ -23,9 +23,17 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Remove deprecated experimental.appDir as it's default in Next.js 14
   experimental: {
-    appDir: true,
+    // Only include necessary experimental features
   },
+  
+  // Output configuration for better build performance
+  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
+  
+  // Optimize bundle tracing
+  outputFileTracing: true,
+  
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
@@ -41,9 +49,35 @@ const nextConfig = {
       },
     ],
   },
+  
   env: {
     CUSTOM_KEY: 'KotigPoto PWA',
   },
+  
+  // Webpack configuration to prevent circular dependencies
+  webpack: (config, { dev, isServer }) => {
+    // Optimize for production builds
+    if (!dev && !isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+      }
+    }
+    
+    // Prevent potential circular dependency issues
+    config.module.rules.push({
+      test: /\.js$/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['next/babel'],
+          cacheDirectory: true,
+        },
+      },
+    });
+    
+    return config;
+  },
+  
   // Headers for security and performance
   async headers() {
     return [
@@ -66,6 +100,7 @@ const nextConfig = {
       },
     ];
   },
+  
   // Redirects for SEO
   async redirects() {
     return [
